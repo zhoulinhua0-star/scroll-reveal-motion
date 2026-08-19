@@ -1,0 +1,4 @@
+interface:
+  display_name: "Scroll Reveal Motion"
+  short_description: "Add polished, accessible scroll-reveal motion"
+  default_prompt: "Use $scroll-reveal-motion to add a refined reveal-on-scroll effect to this frontend."
