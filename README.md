@@ -55,6 +55,20 @@ another animation dependency.
 
 The Skill will inspect the target frontend first, select the smallest compatible implementation, apply motion only where it improves hierarchy, and run the project's own checks.
 
+## Inputs and outputs
+
+Provide:
+
+- The target frontend repository, page, or component.
+- Which sections or groups should reveal, or permission for the Skill to select them.
+- Any motion or dependency constraints, if applicable.
+
+The Skill produces:
+
+- An adapted React component or Vanilla controller.
+- Integrated reveal styles and updated target markup or components.
+- A summary of changed files and validation results, including reduced-motion behavior.
+
 ## Motion contract
 
 - Reveal once at roughly 16% viewport intersection.
