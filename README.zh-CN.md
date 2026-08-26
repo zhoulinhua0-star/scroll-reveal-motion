@@ -7,22 +7,6 @@
 [![Validate](https://github.com/zhoulinhua0-star/scroll-reveal-motion/actions/workflows/validate.yml/badge.svg)](https://github.com/zhoulinhua0-star/scroll-reveal-motion/actions/workflows/validate.yml)
 [![MIT License](https://img.shields.io/badge/license-MIT-18181b.svg)](LICENSE)
 
-```text
-进入视口  →  opacity + translateY  →  稳定呈现
-```
-
-这个 Skill 会先复用项目已有的动画依赖；如果项目没有动画库，则使用内置的原生 Intersection Observer 实现。它不会劫持滚动，能保证无 JavaScript 时内容仍然可见，并遵循 `prefers-reduced-motion`。
-
-## 能做什么
-
-| 目标 | 内置实现 | 运行时依赖 |
-| --- | --- | --- |
-| React 与 Next.js | 语义化 `ScrollReveal` 组件 | 仅 React |
-| 原生 HTML/CSS/JavaScript | `initScrollReveal()` 控制器 | 无 |
-| 已使用 Motion、Framer Motion 或 GSAP 的项目 | 集成指导 | 复用项目依赖 |
-
-两套内置实现共享同一组数据属性、CSS 变量、动效默认值和单次触发行为。
-
 ## 安装
 
 把下面这段直接发给 Codex：
@@ -54,6 +38,17 @@ Skill 位于 skills/scroll-reveal-motion。
 ```
 
 Skill 会先检查目标前端，选择最小且兼容的实现，只在有助于视觉层级的位置添加动效，并运行项目已有的检查命令。
+
+## 能做什么
+
+| 目标 | 内置实现 | 运行时依赖 |
+| --- | --- | --- |
+| React 与 Next.js | 语义化 `ScrollReveal` 组件 | 仅 React |
+| 原生 HTML/CSS/JavaScript | `initScrollReveal()` 控制器 | 无 |
+| 已使用 Motion、Framer Motion 或 GSAP 的项目 | 集成指导 | 复用项目依赖 |
+
+两套内置实现共享同一组数据属性、CSS 变量、动效默认值和单次触发行为。
+
 
 ## 输入与产出
 

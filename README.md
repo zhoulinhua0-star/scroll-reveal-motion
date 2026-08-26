@@ -7,21 +7,6 @@ English | [简体中文](README.zh-CN.md)
 [![Validate](https://github.com/zhoulinhua0-star/scroll-reveal-motion/actions/workflows/validate.yml/badge.svg)](https://github.com/zhoulinhua0-star/scroll-reveal-motion/actions/workflows/validate.yml)
 [![MIT License](https://img.shields.io/badge/license-MIT-18181b.svg)](LICENSE)
 
-```text
-viewport entry  →  opacity + translateY  →  settled content
-```
-
-The Skill guides an agent to reuse an existing animation dependency when one is already present, or fall back to the bundled native Intersection Observer implementation. It avoids scroll-jacking, keeps no-JavaScript content visible, and honors `prefers-reduced-motion`.
-
-## What it gives you
-
-| Target | Bundled implementation | Runtime dependency |
-| --- | --- | --- |
-| React and Next.js | Semantic `ScrollReveal` component | React only |
-| Vanilla HTML/CSS/JS | `initScrollReveal()` controller | None |
-| Motion, Framer Motion, or GSAP projects | Integration guidance | Reuses the project dependency |
-
-Both bundled implementations share the same data attributes, CSS variables, motion defaults, and one-time reveal behavior.
 
 ## Install
 
@@ -57,6 +42,18 @@ another animation dependency.
 ```
 
 The Skill will inspect the target frontend first, select the smallest compatible implementation, apply motion only where it improves hierarchy, and run the project's own checks.
+
+
+## What it gives you
+
+| Target | Bundled implementation | Runtime dependency |
+| --- | --- | --- |
+| React and Next.js | Semantic `ScrollReveal` component | React only |
+| Vanilla HTML/CSS/JS | `initScrollReveal()` controller | None |
+| Motion, Framer Motion, or GSAP projects | Integration guidance | Reuses the project dependency |
+
+Both bundled implementations share the same data attributes, CSS variables, motion defaults, and one-time reveal behavior.
+
 
 ## Inputs and outputs
 
