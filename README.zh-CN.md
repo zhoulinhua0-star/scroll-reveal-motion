@@ -34,6 +34,9 @@ https://github.com/zhoulinhua0-star/scroll-reveal-motion
 Skill 位于 skills/scroll-reveal-motion。
 ```
 
+> **符号说明：** `$` 是 Codex 的 Skill 调用符号，不是终端提示符。ChatGPT 使用
+> `@`，Claude Code 使用 `/`。
+
 安装完成后，建议新建一个 Codex 对话，让 Skill 列表重新加载。如果仍未出现，请重启 Codex。
 
 ## 使用

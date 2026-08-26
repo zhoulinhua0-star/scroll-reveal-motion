@@ -35,6 +35,9 @@ https://github.com/zhoulinhua0-star/scroll-reveal-motion
 The Skill is located at skills/scroll-reveal-motion.
 ```
 
+> **Syntax note:** `$` invokes a Skill in Codex; it is not a terminal prompt.
+> ChatGPT uses `@`, while Claude Code uses `/`.
+
 After installation, start a new Codex conversation so the refreshed Skill list is loaded. If it still does not appear, restart Codex.
 
 ## Use
