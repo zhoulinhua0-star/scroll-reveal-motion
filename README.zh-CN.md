@@ -9,6 +9,44 @@
 
 ## 安装
 
+同一份 Skill 包同时适用于 Claude Code 和 Codex，请按所用 Agent 选择安装方式。
+
+> **符号说明：** 开头的符号用于调用 Skill，不是终端提示符。Claude Code 使用
+> `/`，Codex 使用 `$`，ChatGPT 使用 `@`。
+
+### Claude Code
+
+本仓库同时也是一个 Claude Code 插件市场（plugin marketplace），两条命令即可安装，并支持后续更新：
+
+```text
+/plugin marketplace add zhoulinhua0-star/scroll-reveal-motion
+/plugin install scroll-reveal-motion@scroll-reveal-motion
+```
+
+如果安装摘要提示需要重新加载，请运行 `/reload-plugins`。后续可用 `/plugin update scroll-reveal-motion@scroll-reveal-motion` 获取新版本。
+
+<details>
+<summary>不使用市场的手动安装</summary>
+
+把 Skill 目录复制到需要的作用域即可：
+
+```bash
+git clone https://github.com/zhoulinhua0-star/scroll-reveal-motion.git
+
+# 本机所有项目
+cp -R scroll-reveal-motion/skills/scroll-reveal-motion ~/.claude/skills/
+
+# 或仅当前项目；提交到版本库即可共享
+mkdir -p .claude/skills
+cp -R scroll-reveal-motion/skills/scroll-reveal-motion .claude/skills/
+```
+
+Claude Code 会监听这些目录，Skill 在当前会话中即可出现。如果顶层 `.claude/skills/` 是会话启动后才新建的，请重启一次 Claude Code。
+
+</details>
+
+### Codex
+
 把下面这段直接发给 Codex：
 
 ```text
@@ -18,26 +56,41 @@ https://github.com/zhoulinhua0-star/scroll-reveal-motion
 Skill 位于 skills/scroll-reveal-motion。
 ```
 
-> **符号说明：** `$` 是 Codex 的 Skill 调用符号，不是终端提示符。ChatGPT 使用
-> `@`，Claude Code 使用 `/`。
-
 安装完成后，建议新建一个 Codex 对话，让 Skill 列表重新加载。如果仍未出现，请重启 Codex。
 
 ## 使用
 
-然后显式调用：
+使用所在 Agent 的 Skill 前缀显式调用。
+
+**Claude Code**
+
+```text
+使用 /scroll-reveal-motion，为这个落地页的首屏以下区块和功能卡片添加克制的 fade-up 滚动浮现动效。
+```
+
+**Codex**
 
 ```text
 使用 $scroll-reveal-motion，为这个落地页的首屏以下区块和功能卡片添加克制的 fade-up 滚动浮现动效。
 ```
 
-也可以直接描述你想要的效果：
+也可以完全不用前缀，直接描述你想要的效果：
 
 ```text
 给这些卡片添加无障碍的 staggered scroll reveal，不要引入新的动画依赖。
 ```
 
-Skill 会先检查目标前端，选择最小且兼容的实现，只在有助于视觉层级的位置添加动效，并运行项目已有的检查命令。
+在 Claude Code 中，最后这种写法就已足够。那里的 Skill 由模型自动调用：Agent 会读取 Skill 描述，当请求涉及滚动浮现、fade-up 动效、错开的视口入场，或首屏以下区块的入场动画时自动加载。
+
+无论采用哪种方式，Skill 都会先检查目标前端，选择最小且兼容的实现，只在有助于视觉层级的位置添加动效，并运行项目已有的检查命令。
+
+### 调用名称
+
+| 安装方式 | 输入的名称 |
+| --- | --- |
+| Claude Code 插件 | `/scroll-reveal-motion:scroll-reveal-motion`，或简写 `/scroll-reveal-motion` |
+| Claude Code 手动复制 | `/scroll-reveal-motion` |
+| Codex | `$scroll-reveal-motion` |
 
 ## 能做什么
 
@@ -91,9 +144,12 @@ data-reveal-visible="true"
 
 ```text
 scroll-reveal-motion/
+├── .claude-plugin/                # Claude Code 插件与市场清单
+│   ├── plugin.json
+│   └── marketplace.json
 ├── skills/scroll-reveal-motion/   # 可安装的 Skill 包
 │   ├── SKILL.md
-│   ├── agents/openai.yaml
+│   ├── agents/openai.yaml         # Codex 展示元数据；其他 Agent 不读取
 │   └── assets/
 │       ├── scroll-reveal.css
 │       ├── react/scroll-reveal.tsx
@@ -102,6 +158,10 @@ scroll-reveal-motion/
 ├── tests/                         # 契约与浏览器控制器测试
 └── .github/workflows/validate.yml
 ```
+
+仓库根目录同时就是插件根目录，因此 `skills/` 与 `.claude-plugin/` 并列，而不是放在其内部。`.claude-plugin/` 只应存放上述两个清单文件。
+
+`SKILL.md` 的 frontmatter 只使用 `name` 和 `description`，即 [Agent Skills](https://agentskills.io) 规范中的通用字段，因此同一份包无需按 Agent 改写即可在 Claude Code、Codex 和 claude.ai 中加载。
 
 仓库文档和自动化文件位于可安装的 Skill 包之外，确保 Agent 只加载执行任务所需的内容。
 
@@ -112,6 +172,14 @@ scroll-reveal-motion/
 ```bash
 npm test
 npm run validate
+```
+
+`npm run validate` 同时会校验插件与市场清单，CI 中无需额外工具。
+
+本地已安装 Claude Code 的贡献者还可以运行官方插件校验器：
+
+```bash
+claude plugin validate . --strict
 ```
 
 本地已安装 Codex 的贡献者还可以运行官方 Skill 校验器：

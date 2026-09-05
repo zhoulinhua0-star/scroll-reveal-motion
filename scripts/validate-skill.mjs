@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 
 const repositoryRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const skillRoot = path.join(repositoryRoot, "skills", "scroll-reveal-motion");
+const manifestRoot = path.join(repositoryRoot, ".claude-plugin");
 const skillPath = path.join(skillRoot, "SKILL.md");
 
 function parseFrontmatter(markdown) {
@@ -22,6 +23,10 @@ function parseFrontmatter(markdown) {
 
 async function assertFile(relativePath) {
   await access(path.join(skillRoot, relativePath));
+}
+
+async function readManifest(fileName) {
+  return JSON.parse(await readFile(path.join(manifestRoot, fileName), "utf8"));
 }
 
 const skill = await readFile(skillPath, "utf8");
@@ -86,4 +91,29 @@ for (const [label, source] of [["React", react], ["Vanilla", vanilla]]) {
   }
 }
 
-console.log("Skill structure and motion contract are valid.");
+const plugin = await readManifest("plugin.json");
+const marketplace = await readManifest("marketplace.json");
+
+assert.equal(plugin.name, "scroll-reveal-motion", "Plugin name must match the Skill folder");
+for (const field of ["description", "version", "license", "repository"]) {
+  assert(plugin[field], `plugin.json is missing ${field}`);
+}
+
+for (const field of ["name", "description", "owner"]) {
+  assert(marketplace[field], `marketplace.json is missing ${field}`);
+}
+assert.equal(marketplace.plugins?.length, 1, "This repository publishes exactly one plugin");
+
+const [listing] = marketplace.plugins;
+assert.equal(listing.name, plugin.name, "Marketplace listing must match plugin.json name");
+assert.equal(listing.source, "./", "The plugin is the repository root");
+assert.equal(listing.version, plugin.version, "Marketplace listing version must match plugin.json");
+
+const manifestEntries = await readdir(manifestRoot, { recursive: true });
+assert.deepEqual(
+  manifestEntries.sort(),
+  ["marketplace.json", "plugin.json"],
+  "Only manifests belong in .claude-plugin/; skills and assets stay at the repository root",
+);
+
+console.log("Skill structure, motion contract, and plugin manifests are valid.");

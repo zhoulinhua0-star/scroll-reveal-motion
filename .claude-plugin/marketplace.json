@@ -1,0 +1,22 @@
+{
+  "name": "scroll-reveal-motion",
+  "description": "Agent Skills for restrained, accessible, performant web motion.",
+  "owner": {
+    "name": "Linhua Zhou",
+    "url": "https://github.com/zhoulinhua0-star"
+  },
+  "plugins": [
+    {
+      "name": "scroll-reveal-motion",
+      "source": "./",
+      "description": "Add restrained, accessible, performant reveal-on-scroll motion to React, Next.js, and vanilla web frontends.",
+      "version": "1.0.0",
+      "author": {
+        "name": "Linhua Zhou"
+      },
+      "homepage": "https://github.com/zhoulinhua0-star/scroll-reveal-motion",
+      "repository": "https://github.com/zhoulinhua0-star/scroll-reveal-motion",
+      "license": "MIT"
+    }
+  ]
+}

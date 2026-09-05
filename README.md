@@ -10,6 +10,44 @@ English | [简体中文](README.zh-CN.md)
 
 ## Install
 
+The same Skill package works in both Claude Code and Codex. Pick your agent below.
+
+> **Syntax note:** the leading symbol invokes a Skill; it is not a terminal
+> prompt. Claude Code uses `/`, Codex uses `$`, and ChatGPT uses `@`.
+
+### Claude Code
+
+This repository is also a Claude Code plugin marketplace, so it installs in two commands and stays updatable:
+
+```text
+/plugin marketplace add zhoulinhua0-star/scroll-reveal-motion
+/plugin install scroll-reveal-motion@scroll-reveal-motion
+```
+
+Run `/reload-plugins` if the install summary asks for it. Later, `/plugin update scroll-reveal-motion@scroll-reveal-motion` picks up new releases.
+
+<details>
+<summary>Manual install, without the marketplace</summary>
+
+Copy the Skill directory to whichever scope you want:
+
+```bash
+git clone https://github.com/zhoulinhua0-star/scroll-reveal-motion.git
+
+# Every project on this machine
+cp -R scroll-reveal-motion/skills/scroll-reveal-motion ~/.claude/skills/
+
+# Or a single project, shareable by committing it
+mkdir -p .claude/skills
+cp -R scroll-reveal-motion/skills/scroll-reveal-motion .claude/skills/
+```
+
+Claude Code watches these directories, so the Skill appears in the current session. If you had to create a top-level `.claude/skills/` that did not exist when the session started, restart Claude Code once.
+
+</details>
+
+### Codex
+
 Copy and paste this into Codex:
 
 ```text
@@ -20,28 +58,44 @@ https://github.com/zhoulinhua0-star/scroll-reveal-motion
 The Skill is located at skills/scroll-reveal-motion.
 ```
 
-> **Syntax note:** `$` invokes a Skill in Codex; it is not a terminal prompt.
-> ChatGPT uses `@`, while Claude Code uses `/`.
-
 After installation, start a new Codex conversation so the refreshed Skill list is loaded. If it still does not appear, restart Codex.
 
 ## Use
 
-Then invoke it explicitly:
+Invoke it explicitly, using your agent's Skill prefix.
+
+**Claude Code**
+
+```text
+Use /scroll-reveal-motion to add restrained fade-up reveals to the
+below-the-fold sections and feature cards on this landing page.
+```
+
+**Codex**
 
 ```text
 Use $scroll-reveal-motion to add restrained fade-up reveals to the
 below-the-fold sections and feature cards on this landing page.
 ```
 
-Or describe the effect naturally:
+Or describe the effect naturally, with no prefix at all:
 
 ```text
 Add an accessible staggered scroll reveal to these cards without adding
 another animation dependency.
 ```
 
-The Skill will inspect the target frontend first, select the smallest compatible implementation, apply motion only where it improves hierarchy, and run the project's own checks.
+In Claude Code that last form is enough on its own. Skills there are model-invoked: the agent reads the Skill description and loads it when a request mentions scroll reveal, fade-up motion, staggered viewport entrances, or below-the-fold sections that appear on entry.
+
+Either way, the Skill will inspect the target frontend first, select the smallest compatible implementation, apply motion only where it improves hierarchy, and run the project's own checks.
+
+### Invocation names
+
+| Install method | Name to type |
+| --- | --- |
+| Claude Code plugin | `/scroll-reveal-motion:scroll-reveal-motion`, or the bare `/scroll-reveal-motion` |
+| Claude Code manual copy | `/scroll-reveal-motion` |
+| Codex | `$scroll-reveal-motion` |
 
 
 ## What it gives you
@@ -96,9 +150,12 @@ data-reveal-visible="true"
 
 ```text
 scroll-reveal-motion/
+├── .claude-plugin/                # Claude Code plugin and marketplace manifests
+│   ├── plugin.json
+│   └── marketplace.json
 ├── skills/scroll-reveal-motion/   # Installable Skill package
 │   ├── SKILL.md
-│   ├── agents/openai.yaml
+│   ├── agents/openai.yaml         # Codex presentation metadata; inert elsewhere
 │   └── assets/
 │       ├── scroll-reveal.css
 │       ├── react/scroll-reveal.tsx
@@ -107,6 +164,10 @@ scroll-reveal-motion/
 ├── tests/                         # Contract and browser-controller tests
 └── .github/workflows/validate.yml
 ```
+
+The repository root doubles as the plugin root, which is why `skills/` sits beside `.claude-plugin/` rather than inside it. Only the two manifests belong in `.claude-plugin/`.
+
+`SKILL.md` frontmatter is limited to `name` and `description`, the fields common to the [Agent Skills](https://agentskills.io) specification, so the same package loads in Claude Code, Codex, and claude.ai without per-agent edits.
 
 Repository documentation and automation stay outside the installable Skill package so agents load only the files needed to perform the task.
 
@@ -117,6 +178,14 @@ The runtime templates add no animation dependency. Repository validation needs N
 ```bash
 npm test
 npm run validate
+```
+
+`npm run validate` also checks the plugin and marketplace manifests, so no extra tooling is required in CI.
+
+Contributors with Claude Code installed can additionally run the official plugin validator:
+
+```bash
+claude plugin validate . --strict
 ```
 
 Contributors with Codex installed can additionally run the official Skill validator:
