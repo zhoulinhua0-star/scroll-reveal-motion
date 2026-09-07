@@ -3,6 +3,7 @@
     --reveal-delay: 0ms;
     --reveal-distance: 24px;
     --reveal-duration: 560ms;
+    --reveal-fade-duration: 480ms;
     --reveal-stagger: 90ms;
     --reveal-ease: cubic-bezier(0.22, 1, 0.36, 1);
   }
@@ -11,7 +12,7 @@
     opacity: 0;
     transform: translate3d(0, var(--reveal-distance), 0);
     transition:
-      opacity var(--reveal-duration) var(--reveal-ease),
+      opacity var(--reveal-fade-duration) var(--reveal-ease),
       transform var(--reveal-duration) var(--reveal-ease);
     transition-delay: var(--reveal-delay);
     will-change: opacity, transform;
@@ -26,11 +27,12 @@
   [data-scroll-reveal="stagger"][data-reveal-ready="true"] > * {
     --reveal-distance: 20px;
     --reveal-duration: 520ms;
+    --reveal-fade-duration: 440ms;
 
     opacity: 0;
     transform: translate3d(0, var(--reveal-distance), 0);
     transition:
-      opacity var(--reveal-duration) var(--reveal-ease),
+      opacity var(--reveal-fade-duration) var(--reveal-ease),
       transform var(--reveal-duration) var(--reveal-ease);
     will-change: opacity, transform;
   }

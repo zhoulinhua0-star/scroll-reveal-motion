@@ -121,9 +121,10 @@ Skill 会产出：
 
 - 元素与视口相交约 16% 时触发一次。
 - 只对 `opacity` 和 `transform` 做动画。
-- 默认使用克制的 20–24px 垂直位移和 520–560ms 减速过渡。
+- 默认使用克制的 20–24px 垂直位移、520–560ms 的减速位移，以及更短的 440–480ms 淡入。
 - 同组最多明显错开四个元素，每项间隔 90ms；后续元素与第四项同时出现。
 - 在客户端初始化前、无 JavaScript 和减少动态效果模式下，内容始终可见。
+- 在减少动态效果模式下，让整组构图停在完成帧，而不只是停下入场动画。
 - 保持 DOM 顺序、焦点顺序、指针行为和语义化元素不变。
 
 稳定的集成接口有意保持精简：
@@ -136,6 +137,7 @@ data-reveal-visible="true"
 --reveal-delay
 --reveal-distance
 --reveal-duration
+--reveal-fade-duration
 --reveal-stagger
 --reveal-ease
 ```

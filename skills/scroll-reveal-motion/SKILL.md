@@ -33,7 +33,7 @@ Preserve these attributes across implementations unless the target project alrea
 - Add `data-reveal-ready="true"` only after client code initializes; content must remain visible without it.
 - Add `data-reveal-visible="true"` once the element intersects and keep it visible.
 - Use `--reveal-delay` for an intentional per-group delay.
-- Allow product-level tuning through `--reveal-distance`, `--reveal-duration`, `--reveal-stagger`, and `--reveal-ease`.
+- Allow product-level tuning through `--reveal-distance`, `--reveal-duration`, `--reveal-fade-duration`, `--reveal-stagger`, and `--reveal-ease`.
 
 Do not rename this contract casually. Update both implementations, the shared CSS, and validation together when a target project genuinely requires a change.
 
@@ -42,7 +42,7 @@ Do not rename this contract casually. Update both implementations, the shared CS
 Use these defaults and adjust them to the product's existing visual language:
 
 - Animate `opacity: 0 → 1` and `translateY(20–24px) → 0`.
-- Use 520–560ms for a standard entrance.
+- Use 520–560ms for the transform and a shorter 440–480ms for the opacity, so copy is readable before the element finishes settling.
 - Use `cubic-bezier(0.22, 1, 0.36, 1)` or the framework's equivalent decelerating ease.
 - Trigger once at roughly 15–20% intersection with a small negative bottom root margin.
 - Stagger groups by 70–100ms per item and cap the obvious sequence at four items.
@@ -59,11 +59,25 @@ Keep hero copy immediately readable unless the user explicitly requests an entra
 - Reveal immediately when Intersection Observer is unavailable.
 - Disconnect observers after one-time reveals and during component or page cleanup.
 
+## Reduced-Motion Rest State
+
+A reveal usually sits inside a composition that also moves: looping ambient effects, mock interfaces that play through a sequence, progress bars, carets, and pulses. Stopping those animations is not enough, because most of them are authored from an empty first frame and freeze into a half-drawn scene.
+
+Under `prefers-reduced-motion: reduce`, compose a deliberate resting frame for the whole group:
+
+- Inventory every animated element inside and around the revealed section, not only the reveal itself.
+- Set each one to its completed frame: bars filled to their target width, checkboxes checked, badges and toasts present, indicators lit, transformed elements at their final scale or position.
+- Silence decorative loops with `animation: none`, and leave elements that only signal activity, such as carets and pulses, visible and still.
+- Express the resting frame in CSS beside the reveal styles rather than in JavaScript, so a preference change applies without re-running client code.
+
+Read the result as a static screenshot and confirm it looks finished rather than mid-sequence.
+
 ## Validation
 
 - Confirm content is visible in server-rendered HTML before reveal initialization.
 - Confirm each element reveals only once and does not flash from visible to hidden on hydration.
 - Confirm initial and live changes to reduced-motion preference show the final state without transition.
+- Confirm the reduced-motion view rests in a finished scene, with no empty progress bars, unchecked states, missing badges, or elements stalled mid-sequence.
 - Check 375px and desktop widths for overflow, clipping, and unintended wrapper layout.
 - Check that staggered children remain semantic, focusable, and clickable.
 - Confirm unmounting or cleanup disconnects the observer.

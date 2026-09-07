@@ -77,6 +77,7 @@ for (const token of [
   "--reveal-delay",
   "--reveal-distance",
   "--reveal-duration",
+  "--reveal-fade-duration",
   "--reveal-stagger",
   "--reveal-ease",
 ]) {

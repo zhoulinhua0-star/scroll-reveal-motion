@@ -127,9 +127,10 @@ The Skill produces:
 
 - Reveal once at roughly 16% viewport intersection.
 - Animate only `opacity` and `transform`.
-- Use a restrained 20–24px vertical offset and a 520–560ms decelerating transition.
+- Use a restrained 20–24px vertical offset, a 520–560ms decelerating transform, and a shorter 440–480ms fade.
 - Stagger up to four visually related children by 90ms; reveal later children with the fourth.
 - Keep content visible before client initialization, without JavaScript, and with reduced motion enabled.
+- Under reduced motion, rest the whole composition in its completed frame, not only the reveal.
 - Preserve DOM order, focus order, pointer behavior, and semantic elements.
 
 The stable integration surface is intentionally small:
@@ -142,6 +143,7 @@ data-reveal-visible="true"
 --reveal-delay
 --reveal-distance
 --reveal-duration
+--reveal-fade-duration
 --reveal-stagger
 --reveal-ease
 ```
