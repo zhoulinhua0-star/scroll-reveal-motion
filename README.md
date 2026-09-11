@@ -24,6 +24,9 @@ These are instructions and resources a coding agent adapts to your frontend — 
 
 ```text
 /plugin marketplace add zhoulinhua0-star/scroll-reveal-motion
+```
+
+```text
 /plugin install scroll-reveal-motion@scroll-reveal-motion
 ```
 
