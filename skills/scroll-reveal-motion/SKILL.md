@@ -50,6 +50,8 @@ Use these defaults and adjust them to the product's existing visual language:
 
 Keep hero copy immediately readable unless the user explicitly requests an entrance animation. Avoid animating every paragraph or interactive control.
 
+When a page-entry headline animation is requested, it can be handled separately by `hero-text-reveal` if available. Keep the hero outside scroll-reveal targets and wrappers, give each effect its own animation properties, and coordinate reduced-motion final states. Neither effect needs to wait for the other.
+
 ## Accessibility and Resilience
 
 - Honor `prefers-reduced-motion: reduce` and render the final state immediately, including when the preference changes while content is waiting to reveal.

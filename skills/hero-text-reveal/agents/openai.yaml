@@ -1,0 +1,4 @@
+interface:
+  display_name: "Hero Text Reveal"
+  short_description: "Add staggered hero text entrance animations"
+  default_prompt: "Use $hero-text-reveal to add a staggered text entrance to this hero and coordinate it with any existing scroll reveals."

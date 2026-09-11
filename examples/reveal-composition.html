@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hero + scroll reveal — working example</title>
+  <link rel="stylesheet" href="../skills/scroll-reveal-motion/assets/scroll-reveal.css">
+  <style>
+    :root { color-scheme: dark; background: #171719; color: #f4f1eb; font: 16px/1.6 system-ui, sans-serif; }
+    * { box-sizing: border-box; }
+    body { margin: 0; }
+    main { max-width: 1040px; margin: auto; padding: 36px clamp(24px, 5vw, 64px); }
+    nav { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+    a { color: #d2b4ff; text-underline-offset: 4px; }
+    a:focus-visible { outline: 2px solid #d2b4ff; outline-offset: 6px; }
+    .eyebrow { color: #bab6bd; font: 12px/1.5 ui-monospace, monospace; letter-spacing: .12em; text-transform: uppercase; }
+    .hero { min-height: 110vh; padding-top: clamp(64px, 12vh, 120px); }
+    h1 { font: 500 clamp(44px, 7vw, 84px)/1.15 Georgia, serif; margin: 24px 0 40px; letter-spacing: -.025em; }
+    h2[data-hero-reveal] { font-size: clamp(28px, 4vw, 48px); line-height: 1.4; font-weight: 500; margin: 24px 0; }
+    .word { white-space: nowrap; }
+    .accent { color: #d2b4ff; }
+    @supports (background-clip: text) {
+      .accent { background: linear-gradient(100deg, #f4a7d5, #b798ff); background-clip: text; color: transparent; }
+    }
+    .note { max-width: 580px; color: #bab6bd; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+    [data-hero-unit] { opacity: 1; }
+    @media (prefers-reduced-motion: no-preference) {
+      [data-hero-reveal]:not([data-hero-settled]) [data-hero-unit] {
+        animation: hero-letter-in 1000ms ease backwards;
+        animation-delay: calc(var(--hero-index) * 80ms);
+      }
+      @supports (background-clip: text) {
+        [data-hero-reveal]:not([data-hero-settled]) .accent {
+          animation: hero-accent-in 600ms ease backwards;
+          animation-delay: var(--hero-total);
+        }
+      }
+    }
+    @keyframes hero-letter-in { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes hero-accent-in { from { color: #f4f1eb; } to { color: transparent; } }
+    #unicode { font-size: 22px; }
+    #sections { padding: 48px 0 72px; }
+    .cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; margin-top: 32px; padding: 0; list-style: none; }
+    .cards li { border-top: 1px solid #57505d; padding: 24px 0; }
+    .cards h3 { margin: 12px 0; font-size: 20px; }
+    .cards p { color: #bab6bd; }
+    footer { border-top: 1px solid #57505d; padding: 24px 0; color: #bab6bd; }
+    @media (max-width: 600px) { .cards { grid-template-columns: 1fr; } nav { align-items: start; } }
+  </style>
+</head>
+<body>
+<main>
+  <nav aria-label="Example navigation"><span class="eyebrow">Scroll Reveal Motion / example</span><a href="#sections">Scroll to cards ↓</a></nav>
+  <section class="hero" aria-labelledby="english">
+    <p class="eyebrow">01 / On page entry</p>
+    <!-- Pre-segmented at authoring time using Intl.Segmenter, never rebuilt on hydration. -->
+    <h1 id="english" lang="en" data-hero-reveal style="--hero-total:2360ms"><span class="sr-only">Words arrive gently.</span><span aria-hidden="true"><span class="word"><span data-hero-unit style="--hero-index:0">W</span><span data-hero-unit style="--hero-index:1">o</span><span data-hero-unit style="--hero-index:2">r</span><span data-hero-unit style="--hero-index:3">d</span><span data-hero-unit style="--hero-index:4">s</span></span> <span class="word"><span data-hero-unit style="--hero-index:5">a</span><span data-hero-unit style="--hero-index:6">r</span><span data-hero-unit style="--hero-index:7">r</span><span data-hero-unit style="--hero-index:8">i</span><span data-hero-unit style="--hero-index:9">v</span><span data-hero-unit style="--hero-index:10">e</span></span> <span class="word"></span><span class="accent"><span class="word"><span data-hero-unit style="--hero-index:11">g</span><span data-hero-unit style="--hero-index:12">e</span><span data-hero-unit style="--hero-index:13">n</span><span data-hero-unit style="--hero-index:14">t</span><span data-hero-unit style="--hero-index:15">l</span><span data-hero-unit style="--hero-index:16">y</span><span data-hero-unit style="--hero-index:17">.</span></span></span></span></h1>
+    <h2 id="chinese" lang="zh-Hans" data-hero-reveal style="--hero-total:1640ms"><span class="sr-only">让文字，慢慢浮现。</span><span aria-hidden="true"><span data-hero-unit style="--hero-index:0">让</span><span data-hero-unit style="--hero-index:1">文</span><span data-hero-unit style="--hero-index:2">字</span><span data-hero-unit style="--hero-index:3">，</span><span class="accent"><span data-hero-unit style="--hero-index:4">慢</span><span data-hero-unit style="--hero-index:5">慢</span><span data-hero-unit style="--hero-index:6">浮</span><span data-hero-unit style="--hero-index:7">现</span><span data-hero-unit style="--hero-index:8">。</span></span></span></h2>
+    <p id="unicode" lang="en" data-hero-reveal style="--hero-total:1560ms"><span class="sr-only">Café é 👩🏽‍💻 你好</span><span aria-hidden="true"><span class="word"><span data-hero-unit style="--hero-index:0">C</span><span data-hero-unit style="--hero-index:1">a</span><span data-hero-unit style="--hero-index:2">f</span><span data-hero-unit style="--hero-index:3">é</span></span> <span class="word"><span data-hero-unit style="--hero-index:4">é</span></span> <span class="word"><span data-hero-unit style="--hero-index:5">👩🏽‍💻</span></span> <span class="word"></span><span class="accent"><span class="word"><span data-hero-unit style="--hero-index:6">你</span><span data-hero-unit style="--hero-index:7">好</span></span></span></span></p>
+    <p class="note">A working Vanilla example of the hero-text-reveal guidance. Text enters on page load; the cards below use the bundled scroll controller.</p>
+    <p class="note" lang="zh-Hans">首屏文字自动入场，下方卡片随滚动浮现。开启“减少动态效果”后，直接显示完整内容。</p>
+    <a href="reveal-composition.html">Reload to replay</a>
+  </section>
+  <section id="sections" aria-labelledby="section-title">
+    <div data-scroll-reveal="single"><p class="eyebrow">02 / On viewport entry</p><h2 id="section-title">Independent triggers. One page.</h2></div>
+    <ul class="cards" data-scroll-reveal="stagger">
+      <li><span class="eyebrow">01</span><h3>Page entry</h3><p>Only the headline owns the character fade.</p></li>
+      <li><span class="eyebrow">02</span><h3>Scroll entry</h3><p>These cards use the existing one-time fade-up.</p></li>
+      <li><span class="eyebrow">03</span><h3>Reduced motion</h3><p>Both patterns show their complete resting state.</p></li>
+    </ul>
+  </section>
+  <footer>A composition example, not a framework component or a replica of Phi Browser.</footer>
+</main>
+<script type="module">
+  import { initScrollReveal } from '../skills/scroll-reveal-motion/assets/vanilla/scroll-reveal.js';
+  const preference = matchMedia('(prefers-reduced-motion: reduce)');
+  const heroes = [...document.querySelectorAll('[data-hero-reveal]')];
+  function settleHeroes() { heroes.forEach(hero => { hero.dataset.heroSettled = 'true'; }); }
+  function onPreference(event) { if (event.matches) settleHeroes(); }
+  if (preference.matches) settleHeroes();
+  preference.addEventListener('change', onPreference);
+  // Latch completion so toggling motion back on cannot replay finished text.
+  const entrances = document.getAnimations().filter(animation => animation.effect?.target.closest('[data-hero-reveal]'));
+  Promise.all(entrances.map(animation => animation.finished.catch(() => {}))).then(settleHeroes);
+  let cleanupScroll = initScrollReveal();
+  addEventListener('pagehide', () => { settleHeroes(); cleanupScroll(); preference.removeEventListener('change', onPreference); });
+  addEventListener('pageshow', event => {
+    if (event.persisted) { preference.addEventListener('change', onPreference); cleanupScroll = initScrollReveal(); }
+  });
+</script>
+</body>
+</html>

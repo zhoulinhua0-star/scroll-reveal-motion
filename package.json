@@ -4,6 +4,7 @@
   "private": true,
   "description": "Validation tooling for the scroll-reveal-motion Agent Skill",
   "scripts": {
+    "check:browser": "node tests/browser/check-reveals.cjs",
     "check:react": "npx --yes esbuild@0.25.9 skills/scroll-reveal-motion/assets/react/scroll-reveal.tsx --bundle --format=esm --platform=browser --external:react --outfile=.tmp/scroll-reveal-motion-react.js",
     "test": "node --test tests/*.test.mjs",
     "validate": "node scripts/validate-skill.mjs && node --check skills/scroll-reveal-motion/assets/vanilla/scroll-reveal.js && npm run check:react && npm test"
