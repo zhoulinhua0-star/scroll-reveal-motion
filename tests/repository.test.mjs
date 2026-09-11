@@ -24,6 +24,6 @@ test("React template supports semantic container elements", async () => {
 test("package metadata declares the stable release contract", async () => {
   const packageJson = JSON.parse(await readFile(new URL("../package.json", import.meta.url), "utf8"));
 
-  assert.equal(packageJson.version, "1.0.0");
+  assert.equal(packageJson.version, "1.1.0");
   assert.equal(packageJson.private, true);
 });

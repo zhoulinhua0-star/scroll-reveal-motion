@@ -1,6 +1,6 @@
 {
   "name": "scroll-reveal-motion",
-  "description": "Agent Skills for restrained, accessible, performant web motion.",
+  "description": "Agent Skills for restrained, accessible, performant web motion: hero text entrances and scroll reveals.",
   "owner": {
     "name": "Linhua Zhou",
     "url": "https://github.com/zhoulinhua0-star"
@@ -9,8 +9,8 @@
     {
       "name": "scroll-reveal-motion",
       "source": "./",
-      "description": "Add restrained, accessible, performant reveal-on-scroll motion to React, Next.js, and vanilla web frontends.",
-      "version": "1.0.0",
+      "description": "Two Agent Skills for restrained, accessible web motion: staggered hero headline entrances on page entry, and reveal-on-scroll sections for React, Next.js, and vanilla frontends.",
+      "version": "1.1.0",
       "author": {
         "name": "Linhua Zhou"
       },

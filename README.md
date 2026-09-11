@@ -1,139 +1,120 @@
 # Scroll Reveal Motion
 
-An Agent Skill for adding restrained, accessible, and performant reveal-on-scroll motion to modern web interfaces.
+Two Agent Skills for web motion: **headlines that fade in on page entry** and **sections that reveal as you scroll**.
 
 English | [简体中文](README.zh-CN.md)
 
 [![Validate](https://github.com/zhoulinhua0-star/scroll-reveal-motion/actions/workflows/validate.yml/badge.svg)](https://github.com/zhoulinhua0-star/scroll-reveal-motion/actions/workflows/validate.yml)
 [![MIT License](https://img.shields.io/badge/license-MIT-18181b.svg)](LICENSE)
 
+![Completed English and Chinese headline fades with pink-to-purple emphasis, rendered from the working example](assets/readme/reveal-example.png)
+
+*A completed frame from the [working example](examples/reveal-composition.html). Run it locally to see the entrance and the scroll-triggered cards.*
+
+## Choose your motion
+
+| Skill | Trigger and effect | Included today |
+| --- | --- | --- |
+| [`hero-text-reveal`](skills/hero-text-reveal/SKILL.md) | Page entry · staggered headline opacity | Implementation guidance, Phi reference notes, a Vanilla composition example |
+| [`scroll-reveal-motion`](skills/scroll-reveal-motion/SKILL.md) | Viewport entry · one-time fade-up | React/Next.js component, Vanilla controller, shared CSS |
+
+These are instructions and resources for a coding agent to adapt to your frontend. `hero-text-reveal` does **not** yet ship a reusable React component or a general-purpose text splitter. Its example uses text segmented at authoring time, including Chinese, emoji, and combining marks.
+
+## Try the example
+
+From this checkout's root:
+
+```bash
+python3 -m http.server 8765 --bind 127.0.0.1
+```
+
+Open [the local example](http://127.0.0.1:8765/examples/reveal-composition.html). Reload for the headline entrance, scroll to the cards, and enable your system's reduced-motion preference to compare the finished state. GitHub shows the HTML source; it does not run the example inline.
 
 ## Install
 
-The same Skill package works in both Claude Code and Codex. Pick your agent below.
+Install either skill alone or both. The local instructions below use the exact files in your checkout; marketplace installs use the version published upstream and may lag local changes.
 
-> **Syntax note:** the leading symbol invokes a Skill; it is not a terminal
-> prompt. Claude Code uses `/`, Codex uses `$`, and ChatGPT uses `@`.
+### Codex — from this checkout
 
-### Claude Code
+Copy the packages into your [personal skills directory](https://learn.chatgpt.com/docs/build-skills#where-codex-loads-local-skills):
 
-This repository is also a Claude Code plugin marketplace, so it installs in two commands and stays updatable:
+```bash
+mkdir -p ~/.agents/skills
+cp -R skills/scroll-reveal-motion ~/.agents/skills/
+cp -R skills/hero-text-reveal ~/.agents/skills/
+```
+
+Keep one installed copy of each skill name. If you already maintain these skills in a different supported location, update those copies instead of creating duplicates.
+
+### Claude Code — from this checkout
+
+Load the repository as a [local plugin](https://code.claude.com/docs/en/plugins#test-your-plugins-locally):
+
+```bash
+claude --plugin-dir .
+```
+
+Or copy either package into `~/.claude/skills/` for personal use. The repository contains one plugin named `scroll-reveal-motion`, with two skill directories.
+
+<details>
+<summary>Install the published Claude Code marketplace version</summary>
 
 ```text
 /plugin marketplace add zhoulinhua0-star/scroll-reveal-motion
 /plugin install scroll-reveal-motion@scroll-reveal-motion
 ```
 
-Run `/reload-plugins` if the install summary asks for it. Later, `/plugin update scroll-reveal-motion@scroll-reveal-motion` picks up new releases.
-
-<details>
-<summary>Manual install, without the marketplace</summary>
-
-Copy the Skill directory to whichever scope you want:
-
-```bash
-git clone https://github.com/zhoulinhua0-star/scroll-reveal-motion.git
-
-# Every project on this machine
-cp -R scroll-reveal-motion/skills/scroll-reveal-motion ~/.claude/skills/
-
-# Or a single project, shareable by committing it
-mkdir -p .claude/skills
-cp -R scroll-reveal-motion/skills/scroll-reveal-motion .claude/skills/
-```
-
-Claude Code watches these directories, so the Skill appears in the current session. If you had to create a top-level `.claude/skills/` that did not exist when the session started, restart Claude Code once.
+Check that the installed revision contains `skills/hero-text-reveal` before invoking it. Use the local checkout instructions to try changes that have not been published.
 
 </details>
 
-### Codex
+## Use them together
 
-Copy and paste this into Codex:
-
-```text
-Use $skill-installer to install the scroll-reveal-motion Skill from this
-GitHub repository:
-https://github.com/zhoulinhua0-star/scroll-reveal-motion
-
-The Skill is located at skills/scroll-reveal-motion.
-```
-
-After installation, start a new Codex conversation so the refreshed Skill list is loaded. If it still does not appear, restart Codex.
-
-## Use
-
-Invoke it explicitly, using your agent's Skill prefix.
-
-**Claude Code**
+After installing both, give your agent the target page and this prompt. In Codex:
 
 ```text
-Use /scroll-reveal-motion to add restrained fade-up reveals to the
-below-the-fold sections and feature cards on this landing page.
+Use $hero-text-reveal for a staggered hero headline entrance, and
+$scroll-reveal-motion for the below-the-fold sections and feature cards.
+Preserve the existing typography, reuse existing animation dependencies,
+and show the completed composition when reduced motion is enabled.
 ```
 
-**Codex**
+In Claude Code, with the plugin installed:
 
 ```text
-Use $scroll-reveal-motion to add restrained fade-up reveals to the
-below-the-fold sections and feature cards on this landing page.
+Use /scroll-reveal-motion:hero-text-reveal for a staggered hero headline entrance,
+and /scroll-reveal-motion:scroll-reveal-motion for the below-the-fold sections and
+feature cards. Preserve the existing typography, reuse existing animation
+dependencies, and show the completed composition when reduced motion is enabled.
 ```
 
-Or describe the effect naturally, with no prefix at all:
-
-```text
-Add an accessible staggered scroll reveal to these cards without adding
-another animation dependency.
-```
-
-In Claude Code that last form is enough on its own. Skills there are model-invoked: the agent reads the Skill description and loads it when a request mentions scroll reveal, fade-up motion, staggered viewport entrances, or below-the-fold sections that appear on entry.
-
-Either way, the Skill will inspect the target frontend first, select the smallest compatible implementation, apply motion only where it improves hierarchy, and run the project's own checks.
-
-### Invocation names
-
-| Install method | Name to type |
-| --- | --- |
-| Claude Code plugin | `/scroll-reveal-motion:scroll-reveal-motion`, or the bare `/scroll-reveal-motion` |
-| Claude Code manual copy | `/scroll-reveal-motion` |
-| Codex | `$scroll-reveal-motion` |
-
-
-## What it gives you
-
-| Target | Bundled implementation | Runtime dependency |
+| Installation | Hero invocation | Scroll invocation |
 | --- | --- | --- |
-| React and Next.js | Semantic `ScrollReveal` component | React only |
-| Vanilla HTML/CSS/JS | `initScrollReveal()` controller | None |
-| Motion, Framer Motion, or GSAP projects | Integration guidance | Reuses the project dependency |
+| Codex | `$hero-text-reveal` | `$scroll-reveal-motion` |
+| Claude Code personal skills | `/hero-text-reveal` | `/scroll-reveal-motion` |
+| Claude Code plugin | `/scroll-reveal-motion:hero-text-reveal` | `/scroll-reveal-motion:scroll-reveal-motion` |
 
-Both bundled implementations share the same data attributes, CSS variables, motion defaults, and one-time reveal behavior.
+The skills inspect the target stack before adapting the effect. Provide the page or components, the text or groups to animate, and any timing or dependency constraints.
 
+**One page, separate responsibilities:** keep the hero outside scroll-reveal wrappers. Each effect owns its own elements and timing; neither waits for the other. Use a shared reduced-motion policy and preserve existing motion conventions.
 
-## Inputs and outputs
+## Motion and compatibility
 
-Provide:
+| | Hero text | Scroll sections |
+| --- | --- | --- |
+| Starting point | 1,000ms character fade, 80ms stagger, CSS `ease` | 20–24px rise, 520–560ms movement, 440–480ms fade |
+| Properties | Opacity; optional later accent color transition | Opacity and transform |
+| Sequence | Short headlines; tune longer text or use words/lines | About 16% intersection; 90ms stagger capped at four children |
+| Dependencies | Guidance reuses project libraries or native browser animation | React only for the React template; none for Vanilla |
 
-- The target frontend repository, page, or component.
-- Which sections or groups should reveal, or permission for the Skill to select them.
-- Any motion or dependency constraints, if applicable.
+The hero timing comes from [inspected Phi Browser headline code](skills/hero-text-reveal/references/phi-entrance.md). The example derives its accent timing from its own text and uses a shorter color transition; it is an adaptation, not a pixel-perfect replica.
 
-The Skill produces:
+Both skills require readable fallback content, intact semantics, and a completed reduced-motion state. In the example, disabling JavaScript leaves the finite CSS headline entrance working and the scroll sections visible. Reduced motion shows everything immediately.
 
-- An adapted React component or Vanilla controller.
-- Integrated reveal styles and updated target markup or components.
-- A summary of changed files and validation results, including reduced-motion behavior.
+React/Next.js hero hydration, application routing, other fonts, and additional languages still need verification in the target project. The browser example covers a static Vanilla page, not those framework lifecycles.
 
-## Motion contract
-
-- Reveal once at roughly 16% viewport intersection.
-- Animate only `opacity` and `transform`.
-- Use a restrained 20–24px vertical offset, a 520–560ms decelerating transform, and a shorter 440–480ms fade.
-- Stagger up to four visually related children by 90ms; reveal later children with the fourth.
-- Keep content visible before client initialization, without JavaScript, and with reduced motion enabled.
-- Under reduced motion, rest the whole composition in its completed frame, not only the reveal.
-- Preserve DOM order, focus order, pointer behavior, and semantic elements.
-
-The stable integration surface is intentionally small:
+<details>
+<summary>Stable scroll integration contract</summary>
 
 ```text
 data-scroll-reveal="single | stagger"
@@ -148,63 +129,51 @@ data-reveal-visible="true"
 --reveal-ease
 ```
 
-## Repository layout
+Keep the hero's attributes and variables in their own namespace. The hero guidance does not change this existing contract.
 
-```text
-scroll-reveal-motion/
-├── .claude-plugin/                # Claude Code plugin and marketplace manifests
-│   ├── plugin.json
-│   └── marketplace.json
-├── skills/scroll-reveal-motion/   # Installable Skill package
-│   ├── SKILL.md
-│   ├── agents/openai.yaml         # Codex presentation metadata; inert elsewhere
-│   └── assets/
-│       ├── scroll-reveal.css
-│       ├── react/scroll-reveal.tsx
-│       └── vanilla/scroll-reveal.js
-├── scripts/validate-skill.mjs     # Dependency-free repository validator
-├── tests/                         # Contract and browser-controller tests
-└── .github/workflows/validate.yml
-```
+</details>
 
-The repository root doubles as the plugin root, which is why `skills/` sits beside `.claude-plugin/` rather than inside it. Only the two manifests belong in `.claude-plugin/`.
+## Validation
 
-`SKILL.md` frontmatter is limited to `name` and `description`, the fields common to the [Agent Skills](https://agentskills.io) specification, so the same package loads in Claude Code, Codex, and claude.ai without per-agent edits.
-
-Repository documentation and automation stay outside the installable Skill package so agents load only the files needed to perform the task.
-
-## Validate
-
-The runtime templates add no animation dependency. Repository validation needs Node.js 20 or newer and downloads a pinned `esbuild` binary on the first run to parse the React/TypeScript asset.
+Node.js 20+ is required for repository checks:
 
 ```bash
 npm test
 npm run validate
 ```
 
-`npm run validate` also checks the plugin and marketplace manifests, so no extra tooling is required in CI.
+`npm test` runs eight existing scroll contract/controller tests. `npm run validate` also checks both skill packages, plugin manifests, Vanilla syntax, and React template compilation. The React check uses pinned `esbuild@0.25.9` and requires registry access or an available npm cache.
 
-Contributors with Claude Code installed can additionally run the official plugin validator:
+The optional browser suite checks the composition in Chromium and WebKit: stagger progression, complete heading names, grapheme integrity, stable layout, scroll coexistence, 360px width, initial/live reduced motion, and no-JavaScript behavior. These checks are separate from the default CI job.
 
-```bash
-claude plugin validate . --strict
-```
-
-Contributors with Codex installed can additionally run the official Skill validator:
+With the example server running, install the browser test tooling and run:
 
 ```bash
-python3 ~/.codex/skills/.system/skill-creator/scripts/quick_validate.py \
-  skills/scroll-reveal-motion
+npm install --no-save --package-lock=false playwright@1.62.1
+npx playwright install chromium webkit
+npm run check:browser
 ```
 
-## Release status
+Results and screenshots are written to `.tmp/browser-check/`. The suite validates this example; it does not establish universal browser or framework compatibility.
 
-The source tree targets the `v1.0.0` contract: React/Next.js and Vanilla implementations, framework-selection guidance, stable attributes and CSS variables, and repeatable validation. A Git tag and GitHub release should be created only after the initial commit is reviewed.
+## Repository layout
 
-## Contributing
+```text
+skills/
+├── hero-text-reveal/            # Guidance, UI metadata, reference notes
+└── scroll-reveal-motion/        # Guidance, UI metadata, React/Vanilla/CSS assets
+examples/reveal-composition.html # Bilingual working example
+assets/readme/                  # Screenshot from the example
+scripts/validate-skill.mjs       # Skill, contract and manifest checks
+tests/                          # Default scroll tests + optional browser checks
+.claude-plugin/                 # One plugin and its marketplace listing
+.github/workflows/validate.yml  # Default repository validation
+```
 
-Keep the Skill concise and dependency-free. See [CONTRIBUTING.md](CONTRIBUTING.md) for the validation and compatibility requirements.
+Documentation and browser examples stay outside the installable skill packages. Package and plugin metadata are at `1.1.0`, the release that added `hero-text-reveal`; the presence of further local changes does not imply a new published release.
 
-## License
+## Contributing and license
 
-[MIT](LICENSE). This project implements a common scroll-reveal pattern and is not affiliated with or endorsed by any referenced product or website.
+See [CONTRIBUTING.md](CONTRIBUTING.md) for existing scroll-template requirements. Keep hero guidance focused and validate target-project behavior when adapting it.
+
+[MIT](LICENSE). No affiliation with or endorsement by any reference website.

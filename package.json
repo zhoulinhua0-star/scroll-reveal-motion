@@ -1,8 +1,8 @@
 {
   "name": "scroll-reveal-motion-repository",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
-  "description": "Validation tooling for the scroll-reveal-motion Agent Skill",
+  "description": "Validation tooling for the scroll-reveal-motion Agent Skills",
   "scripts": {
     "check:browser": "node tests/browser/check-reveals.cjs",
     "check:react": "npx --yes esbuild@0.25.9 skills/scroll-reveal-motion/assets/react/scroll-reveal.tsx --bundle --format=esm --platform=browser --external:react --outfile=.tmp/scroll-reveal-motion-react.js",

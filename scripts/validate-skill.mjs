@@ -32,6 +32,19 @@ async function readManifest(fileName) {
 const skill = await readFile(skillPath, "utf8");
 const frontmatter = parseFrontmatter(skill);
 
+const heroRoot = path.join(repositoryRoot, "skills", "hero-text-reveal");
+const heroSkill = await readFile(path.join(heroRoot, "SKILL.md"), "utf8");
+const heroFrontmatter = parseFrontmatter(heroSkill);
+assert.equal(heroFrontmatter.name, "hero-text-reveal", "Hero Skill name must match its folder");
+assert.deepEqual(Object.keys(heroFrontmatter).sort(), ["description", "name"]);
+assert(heroFrontmatter.description.length >= 80, "Hero description must explain capability and triggers");
+assert(!heroSkill.includes("[TODO:"), "Hero Skill contains unfinished scaffold text");
+const heroMetadata = await readFile(path.join(heroRoot, "agents", "openai.yaml"), "utf8");
+assert(heroMetadata.includes("$hero-text-reveal"), "Hero default prompt must invoke its Skill");
+for (const reference of heroSkill.matchAll(/\]\((references\/[^)]+)\)/g)) {
+  await access(path.join(heroRoot, reference[1]));
+}
+
 assert.deepEqual(
   Object.keys(frontmatter).sort(),
   ["description", "name"],
@@ -109,6 +122,37 @@ const [listing] = marketplace.plugins;
 assert.equal(listing.name, plugin.name, "Marketplace listing must match plugin.json name");
 assert.equal(listing.source, "./", "The plugin is the repository root");
 assert.equal(listing.version, plugin.version, "Marketplace listing version must match plugin.json");
+
+// Every Skill this repository ships must be discoverable as a Claude Code plugin Skill
+// (auto-loaded from skills/<name>/SKILL.md) and advertised in the manifests users browse.
+const publishedSkills = ["hero-text-reveal", "scroll-reveal-motion"];
+const skillDirectories = (
+  await readdir(path.join(repositoryRoot, "skills"), { withFileTypes: true })
+)
+  .filter((entry) => entry.isDirectory())
+  .map((entry) => entry.name)
+  .sort();
+assert.deepEqual(
+  skillDirectories,
+  publishedSkills,
+  "skills/ must contain exactly the published Skill packages",
+);
+
+for (const name of publishedSkills) {
+  await access(path.join(repositoryRoot, "skills", name, "SKILL.md"));
+}
+
+for (const [label, description] of [
+  ["plugin.json", plugin.description],
+  ["marketplace listing", listing.description],
+]) {
+  for (const capability of ["hero", "scroll"]) {
+    assert(
+      description.toLowerCase().includes(capability),
+      `${label} description must mention the ${capability} Skill so plugin users can find it`,
+    );
+  }
+}
 
 const manifestEntries = await readdir(manifestRoot, { recursive: true });
 assert.deepEqual(
