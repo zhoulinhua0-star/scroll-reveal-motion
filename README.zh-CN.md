@@ -34,16 +34,13 @@
 
 ### Codex
 
-将 Skill 包复制到[个人技能目录](https://learn.chatgpt.com/docs/build-skills#where-codex-loads-local-skills)：
+复制下面这句话，直接发给 Codex，让 Agent 完成安装：
 
-```bash
-git clone https://github.com/zhoulinhua0-star/scroll-reveal-motion.git
-mkdir -p ~/.agents/skills
-cp -R scroll-reveal-motion/skills/hero-text-reveal ~/.agents/skills/
-cp -R scroll-reveal-motion/skills/scroll-reveal-motion ~/.agents/skills/
+```text
+请使用 $skill-installer 从 https://github.com/zhoulinhua0-star/scroll-reveal-motion 下载并安装 skills/hero-text-reveal 和 skills/scroll-reveal-motion 这两个 Skill，作为我的 Codex 个人技能，若已安装则更新原有副本，避免重复安装。
 ```
 
-每个技能名称保留一份安装。如果你已在其他位置维护这些 Skill，请更新原有副本，避免重复。
+安装后，在需求中加上 `$hero-text-reveal` 或 `$scroll-reveal-motion` 即可调用；如果技能未出现，请[重启 Codex](https://learn.chatgpt.com/docs/build-skills#install-curated-skills-for-local-use)。
 
 ## 使用
 

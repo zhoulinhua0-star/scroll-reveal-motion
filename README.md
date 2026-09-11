@@ -34,16 +34,13 @@ Restart Claude Code afterwards — a running session keeps the version it starte
 
 ### Codex
 
-Copy the packages into your [personal skills directory](https://learn.chatgpt.com/docs/build-skills#where-codex-loads-local-skills):
+Copy and paste this sentence into Codex and let the agent handle installation:
 
-```bash
-git clone https://github.com/zhoulinhua0-star/scroll-reveal-motion.git
-mkdir -p ~/.agents/skills
-cp -R scroll-reveal-motion/skills/hero-text-reveal ~/.agents/skills/
-cp -R scroll-reveal-motion/skills/scroll-reveal-motion ~/.agents/skills/
+```text
+Please use $skill-installer to download and install skills/hero-text-reveal and skills/scroll-reveal-motion from https://github.com/zhoulinhua0-star/scroll-reveal-motion as my personal Codex skills, updating existing copies if already installed to avoid duplicates.
 ```
 
-Keep one installed copy of each skill name. If you already maintain these skills elsewhere, update those copies instead of creating duplicates.
+After installation, invoke `$hero-text-reveal` or `$scroll-reveal-motion` with your request. If the skills don't appear, [restart Codex](https://learn.chatgpt.com/docs/build-skills#install-curated-skills-for-local-use).
 
 ## Use
 
